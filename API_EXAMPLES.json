@@ -1,0 +1,170 @@
+{
+  "usuarios": {
+    "registro": {
+      "url": "http://localhost:3001/api/usuarios/registro",
+      "method": "POST",
+      "body": {
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "email": "juan@example.com",
+        "password": "123456",
+        "telefono": "555-1234",
+        "direccion": {
+          "calle": "Calle Principal 123",
+          "ciudad": "Ciudad de México",
+          "estado": "CDMX",
+          "codigoPostal": "12345",
+          "pais": "México"
+        }
+      }
+    },
+    "login": {
+      "url": "http://localhost:3001/api/usuarios/login",
+      "method": "POST",
+      "body": {
+        "email": "juan@example.com",
+        "password": "123456"
+      }
+    },
+    "obtenerPerfil": {
+      "url": "http://localhost:3001/api/usuarios/perfil/:id",
+      "method": "GET"
+    },
+    "actualizarPerfil": {
+      "url": "http://localhost:3001/api/usuarios/perfil/:id",
+      "method": "PUT",
+      "body": {
+        "nombre": "Juan Carlos",
+        "telefono": "555-5678"
+      }
+    },
+    "obtenerTodos": {
+      "url": "http://localhost:3001/api/usuarios",
+      "method": "GET"
+    }
+  },
+  "productos": {
+    "crear": {
+      "url": "http://localhost:3002/api/productos",
+      "method": "POST",
+      "body": {
+        "nombre": "iPhone 15 Pro",
+        "descripcion": "El último iPhone con chip A17 Pro",
+        "precio": 1199.99,
+        "categoria": "Electrónica",
+        "stock": 50,
+        "marca": "Apple",
+        "imagenes": [
+          "https://example.com/iphone15-1.jpg",
+          "https://example.com/iphone15-2.jpg"
+        ],
+        "especificaciones": {
+          "pantalla": "6.1 pulgadas",
+          "procesador": "A17 Pro",
+          "ram": "8GB",
+          "almacenamiento": "256GB"
+        },
+        "descuento": 10
+      }
+    },
+    "obtenerTodos": {
+      "url": "http://localhost:3002/api/productos",
+      "method": "GET",
+      "params": {
+        "pagina": 1,
+        "limite": 10,
+        "categoria": "Electrónica",
+        "disponible": true,
+        "buscar": "iPhone"
+      }
+    },
+    "obtenerPorId": {
+      "url": "http://localhost:3002/api/productos/:id",
+      "method": "GET"
+    },
+    "obtenerPorCategoria": {
+      "url": "http://localhost:3002/api/productos/categoria/Electrónica",
+      "method": "GET"
+    },
+    "actualizar": {
+      "url": "http://localhost:3002/api/productos/:id",
+      "method": "PUT",
+      "body": {
+        "precio": 1099.99,
+        "stock": 75,
+        "descuento": 15
+      }
+    },
+    "actualizarStock": {
+      "url": "http://localhost:3002/api/productos/:id/stock",
+      "method": "PATCH",
+      "body": {
+        "cantidad": 100
+      }
+    },
+    "eliminar": {
+      "url": "http://localhost:3002/api/productos/:id",
+      "method": "DELETE"
+    }
+  },
+  "pedidos": {
+    "crear": {
+      "url": "http://localhost:3003/api/pedidos",
+      "method": "POST",
+      "body": {
+        "usuarioId": "USER_ID_AQUI",
+        "productos": [
+          {
+            "productoId": "PRODUCTO_ID_AQUI",
+            "cantidad": 2
+          }
+        ],
+        "direccionEntrega": {
+          "calle": "Avenida Reforma 456",
+          "ciudad": "Ciudad de México",
+          "estado": "CDMX",
+          "codigoPostal": "54321",
+          "pais": "México"
+        },
+        "metodoPago": "tarjeta",
+        "notas": "Entregar en horario de oficina"
+      }
+    },
+    "obtenerTodos": {
+      "url": "http://localhost:3003/api/pedidos",
+      "method": "GET",
+      "params": {
+        "pagina": 1,
+        "limite": 10,
+        "estado": "pendiente"
+      }
+    },
+    "obtenerPorId": {
+      "url": "http://localhost:3003/api/pedidos/:id",
+      "method": "GET"
+    },
+    "obtenerPorUsuario": {
+      "url": "http://localhost:3003/api/pedidos/usuario/:usuarioId",
+      "method": "GET"
+    },
+    "actualizarEstado": {
+      "url": "http://localhost:3003/api/pedidos/:id/estado",
+      "method": "PATCH",
+      "body": {
+        "estado": "procesando",
+        "comentario": "Pedido en preparación"
+      }
+    },
+    "cancelar": {
+      "url": "http://localhost:3003/api/pedidos/:id/cancelar",
+      "method": "PATCH",
+      "body": {
+        "motivo": "Cliente solicitó cancelación"
+      }
+    },
+    "obtenerEstadisticas": {
+      "url": "http://localhost:3003/api/pedidos/estadisticas/resumen",
+      "method": "GET"
+    }
+  }
+}

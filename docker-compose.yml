@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  usuarios-service:
+    build: ./usuarios-service
+    container_name: usuarios-service
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/usuarios_db?authSource=admin
+      - JWT_SECRET=tu_clave_secreta_muy_segura
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  productos-service:
+    build: ./productos-service
+    container_name: productos-service
+    restart: always
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/productos_db?authSource=admin
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+  pedidos-service:
+    build: ./pedidos-service
+    container_name: pedidos-service
+    restart: always
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGODB_URI=mongodb://admin:password123@mongodb:27017/pedidos_db?authSource=admin
+      - USUARIOS_SERVICE_URL=http://usuarios-service:3001
+      - PRODUCTOS_SERVICE_URL=http://productos-service:3002
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+      - usuarios-service
+      - productos-service
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge
