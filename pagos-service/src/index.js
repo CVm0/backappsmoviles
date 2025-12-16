@@ -25,12 +25,12 @@ app.get('/health', (req, res) => {
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/huertabeja_pagos';
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('✅ MongoDB conectado - Base de datos de Pagos'))
-  .catch(err => console.error('❌ Error conectando a MongoDB:', err));
+  .then(() => console.log('MongoDB conectado - Base de datos de Pagos'))
+  .catch(err => console.error('Error conectando a MongoDB:', err));
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🎫 Servicio de Pagos corriendo en 0.0.0.0:${PORT}`);
-  console.log(`ℹ️ Accesible desde la red local en: http://<TU_IP>:${PORT}`);
+  console.log(`Servicio de Pagos corriendo en 0.0.0.0:${PORT}`);
+  console.log(`Accesible desde la red local en: http://<TU_IP>:${PORT}`);
 });
 
 module.exports = app;

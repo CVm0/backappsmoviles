@@ -60,7 +60,7 @@ exports.crearPreferencia = async (req, res) => {
     // Crear la preferencia en Mercado Pago
     const result = await preference.create({ body: preferenceData });
 
-    console.log('✅ Preferencia creada:', result.id);
+    console.log('Preferencia creada:', result.id);
 
     res.status(201).json({
       mensaje: 'Preferencia creada exitosamente',
@@ -70,7 +70,7 @@ exports.crearPreferencia = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Error creando preferencia:', error);
+    console.error('Error creando preferencia:', error);
     res.status(500).json({ 
       error: 'Error al crear preferencia de pago',
       detalle: error.message 
@@ -104,7 +104,7 @@ exports.consultarPago = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('❌ Error consultando pago:', error);
+    console.error('Error consultando pago:', error);
     res.status(500).json({ 
       error: 'Error al consultar pago',
       detalle: error.message 
@@ -117,13 +117,13 @@ exports.webhook = async (req, res) => {
   try {
     const { type, data } = req.body;
 
-    console.log('📩 Notificación recibida:', type, data);
+    console.log('Notificacion recibida:', type, data);
 
     if (type === 'payment') {
       const payment = new Payment(client);
       const paymentData = await payment.get({ id: data.id });
 
-      console.log('💰 Estado del pago:', paymentData.status);
+      console.log('Estado del pago:', paymentData.status);
 
       // Aquí puedes actualizar el estado del pedido en tu base de datos
       // Por ejemplo: actualizar el pedido con external_reference
@@ -132,7 +132,7 @@ exports.webhook = async (req, res) => {
     res.sendStatus(200);
 
   } catch (error) {
-    console.error('❌ Error en webhook:', error);
+    console.error('Error en webhook:', error);
     res.sendStatus(500);
   }
 };
@@ -152,7 +152,7 @@ exports.metodosPago = async (req, res) => {
     res.json({ metodos });
 
   } catch (error) {
-    console.error('❌ Error obteniendo métodos de pago:', error);
+    console.error('Error obteniendo metodos de pago:', error);
     res.status(500).json({ error: 'Error al obtener métodos de pago' });
   }
 };
