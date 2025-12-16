@@ -33,7 +33,7 @@
    - En el menú lateral: "Database Access"
    - Click "Add New Database User"
    - Username: `admin` (o el que prefieras)
-   - Password: Genera una contraseña segura o usa la autogenerada
+   - Password: Genera una contraseña segura o usa la autogenerada(Admin1005)
    - **¡GUARDA ESTA CONTRASEÑA!**
    - Database User Privileges: "Read and write to any database"
    - Click "Add User"
@@ -46,6 +46,10 @@
 4. Copia el connection string (se verá así):
    ```
    mongodb+srv://admin:<password>@cluster0.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+   mongodb+srv://admin:Admin1005@cluster0.afm3ixr.mongodb.net/usuarios_db?retryWrites=true&w=majority
+   mongodb+srv://admin:Admin1005@cluster0.afm3ixr.mongodb.net/productos_db?retryWrites=true&w=majority
+   mongodb+srv://admin:Admin1005@cluster0.afm3ixr.mongodb.net/pedidos_db?retryWrites=true&w=majority
    ```
 
 5. **Crea 3 connection strings** (uno para cada microservicio):
