@@ -62,7 +62,7 @@ const pedidoSchema = new mongoose.Schema({
   },
   metodoPago: {
     type: String,
-    enum: ['tarjeta', 'efectivo', 'transferencia', 'paypal'],
+    enum: ['tarjeta', 'efectivo', 'transferencia', 'paypal', 'mercadopago'],
     required: true
   },
   estadoPago: {
