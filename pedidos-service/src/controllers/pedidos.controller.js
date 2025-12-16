@@ -1,6 +1,10 @@
 const Pedido = require('../models/Pedido');
 const axios = require('axios');
 
+// URLs de los microservicios
+const PRODUCTOS_URL = process.env.PRODUCTOS_SERVICE_URL || 'https://productos-service-production.up.railway.app';
+const USUARIOS_URL = process.env.USUARIOS_SERVICE_URL || 'https://usuarios-service-production.up.railway.app';
+
 // @desc    Crear un nuevo pedido
 // @route   POST /api/pedidos
 // @access  Private
@@ -8,10 +12,19 @@ exports.crearPedido = async (req, res) => {
   try {
     const { usuarioId, productos, direccionEntrega, metodoPago, notas } = req.body;
 
+    console.log('=== CREAR PEDIDO ===');
+    console.log('Usuario ID:', usuarioId);
+    console.log('Productos recibidos:', JSON.stringify(productos));
+    console.log('URL Productos Service:', PRODUCTOS_URL);
+    console.log('URL Usuarios Service:', USUARIOS_URL);
+
     // Verificar que el usuario existe (llamada al microservicio de usuarios)
     try {
-      await axios.get(`${process.env.USUARIOS_SERVICE_URL}/api/usuarios/perfil/${usuarioId}`);
+      const userUrl = `${USUARIOS_URL}/api/usuarios/perfil/${usuarioId}`;
+      console.log('Verificando usuario en:', userUrl);
+      await axios.get(userUrl);
     } catch (error) {
+      console.error('Error verificando usuario:', error.message);
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
@@ -21,9 +34,11 @@ exports.crearPedido = async (req, res) => {
 
     for (const item of productos) {
       try {
-        const response = await axios.get(
-          `${process.env.PRODUCTOS_SERVICE_URL}/api/productos/${item.productoId}`
-        );
+        const productUrl = `${PRODUCTOS_URL}/api/productos/${item.productoId}`;
+        console.log('Verificando producto en:', productUrl);
+        
+        const response = await axios.get(productUrl);
+        console.log('Producto encontrado:', response.data);
         
         const producto = response.data;
         
@@ -46,12 +61,17 @@ exports.crearPedido = async (req, res) => {
         });
 
         // Actualizar stock del producto
-        await axios.patch(
-          `${process.env.PRODUCTOS_SERVICE_URL}/api/productos/${item.productoId}/stock`,
-          { cantidad: producto.stock - item.cantidad }
-        );
+        try {
+          const stockUrl = `${PRODUCTOS_URL}/api/productos/${item.productoId}/stock`;
+          console.log('Actualizando stock en:', stockUrl);
+          await axios.patch(stockUrl, { cantidad: producto.stock - item.cantidad });
+        } catch (stockError) {
+          console.error('Error actualizando stock:', stockError.message);
+          // Continuar aunque falle la actualización del stock
+        }
 
       } catch (error) {
+        console.error('Error obteniendo producto:', error.message, error.response?.data);
         return res.status(404).json({ 
           error: `Producto con ID ${item.productoId} no encontrado` 
         });
